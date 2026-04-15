@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고창부자농원 답변 생성기</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f1; color: #333; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        h2 { color: #4a6741; text-align: center; margin-bottom: 25px; }
+        label { font-weight: bold; display: block; margin-bottom: 8px; color: #555; }
+        select, textarea, input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        .btn-group { display: flex; gap: 10px; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-generate { background-color: #6b8e23; color: white; }
+        .btn-generate:hover { background-color: #556b2f; }
+        .btn-copy { background-color: #eee; color: #333; }
+        #result-area { background: #fafafa; border: 1.5px dashed #bccad6; padding: 20px; border-radius: 8px; min-height: 150px; white-space: pre-wrap; line-height: 1.6; position: relative; }
+        .storage-info { color: #d9534f; font-size: 13px; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🌾 고창부자농원 후기 답변 👩‍🌾</h2>
+    
+    <label>1. 상품 선택</label>
+    <select id="product">
+        <option value="땅콩">피땅콩/알땅콩 (고창 땅콩)</option>
+        <option value="앵두팥">앵두팥 (토종팥)</option>
+        <option value="기타">기타 농산물</option>
+    </select>
+
+    <label>2. 고객 성함 (선택)</label>
+    <input type="text" id="customer-name" placeholder="예: 홍길동">
+
+    <label>3. 리뷰 유형</label>
+    <select id="review-type">
+        <option value="positive">긍정 (만족/맛있음)</option>
+        <option value="negative">부정 (불만족/배송/품질)</option>
+    </select>
+
+    <label>4. 추가 내용 (옵션)</label>
+    <textarea id="extra-note" rows="3" placeholder="예: 배송이 빨랐다, 수분감이 좋다 등 특이사항 기재"></textarea>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateResponse()">답변 생성하기</button>
+        <button class="btn-copy" onclick="copyText()">복사하기</button>
+    </div>
+
+    <h3 style="margin-top: 30px; font-size: 16px;">✨ 생성된 답변</h3>
+    <div id="result-area">내용을 입력하고 버튼을 눌러주세요.</div>
+</div>
+
+<script>
+    function generateResponse() {
+        const product = document.getElementById('product').value;
+        const name = document.getElementById('customer-name').value || '고객';
+        const type = document.getElementById('review-type').value;
+        const extra = document.getElementById('extra-note').value;
+        
+        let response = "";
+        const storageInfo = "\n\n요즘 날씨가 따뜻해져서 실온보관은 절대 권유드리지 않고,\n최소 냉장 또는 냉동보관을 적극 추천드립니다.\n식품은 보관이 정말 중요하니 꼭 유의해주세요.";
+
+        if (type === 'positive') {
+            // 긍정 답변
+            response = `안녕하세요, ${name}님! 고창부자농원입니다. 🌾\n저희 정성을 알아주시고 맛있게 드셔주시니 농부로서 정말 보람차고 기쁘네요. `;
+            
+            if (product === '땅콩') {
+                response += "고창 땅콩은 수분감을 적당히 머금고 있어 씹을수록 고소한 풍미가 일품이죠. 🥜 ";
+            } else if (product === '앵두팥') {
+                response += "앵두팥은 깨끗이 씻어 바로 조리하시면 돼요. 절대 찬물에 불리지 마시고 바로 삶으셔야 맛과 향이 제대로 산답니다. ";
+            }
+            
+            if (extra) response += `\n${extra} 부분도 만족하셨다니 다행입니다! `;
+            response += "늘 건강하시고 다음에 또 찾아주세요. 👩‍🌾";
+            
+        } else {
+            // 부정 답변 (사과 -> 공감 -> 해결책)
+            response = `안녕하세요, ${name}님. 우선 저희 상품으로 인해 불편을 드려 정말 죄송한 마음뿐입니다.. 😭\n기대하고 주문하셨을 텐데 실망을 드려 제 마음도 참 무겁네요. `;
+            
+            if (extra) {
+                response += `말씀하신 '${extra}' 부분은 저희가 다시 한번 꼼꼼히 체크하고 개선하겠습니다. `;
+            } else {
+                response += "부족했던 부분은 너그러운 마음으로 한 번만 이해해 주시면, 꼭 보답해 드리고 싶습니다. ";
+            }
+            
+            response += "\n번거로우시겠지만 고객센터로 연락 주시면 빠르게 해결해 드릴 수 있도록 최선을 다하겠습니다. 👩‍🌾";
+        }
+
+        document.getElementById('result-area').innerText = response + storageInfo;
+    }
+
+    function copyText() {
+        const text = document.getElementById('result-area').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('복사되었습니다! 고객님 후기에 붙여넣기 해주세요.');
+        });
+    }
+</script>
+
+</body>
+</html>
